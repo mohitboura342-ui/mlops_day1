@@ -1,11 +1,17 @@
-import joblib
+import mlflow
+import mlflow.sklearn
 import pandas as pd
-import numpy as np
 
-model = joblib.load("models/linear_reg_model.pkl")
+mlflow.set_tracking_uri("sqlite:///mlflow.db")
 
-new_data = pd.DataFrame([[123, 56, 89]])
+# Load saved model
+model = mlflow.sklearn.load_model(
+    "models:/Sales_Prediction_Model@champion"
+)
 
-predictions = model.predict(new_data)
+# New observation
+new_data = pd.DataFrame({"TV": [35], "radio": [50000], "newspaper": [8]})
 
-print("Predicted sales:", predictions)
+# Prediction
+prediction = model.predict(new_data)
+print("Prediction:", prediction[0])

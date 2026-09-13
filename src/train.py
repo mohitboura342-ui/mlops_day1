@@ -48,4 +48,4 @@ print("R2 Score:", r2)
 joblib.dump(model, "models/linear_reg_model.pkl")
 
 
-print("Model saved successfully!")
+print ("Model saved successfully!")

@@ -1,0 +1,31 @@
+artifact_path: file:c:/Users/lenovo/OneDrive/Desktop/mlops_day1/notebooks/mlruns/1/models/m-e65bfb51eb7f4301bbf6813a47c633e9/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.13.15
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.9.0
+    skops_trusted_types: null
+is_signature_from_type_hint: false
+mlflow_version: 3.16.0
+model_id: m-e65bfb51eb7f4301bbf6813a47c633e9
+model_size_bytes: 449079
+model_uuid: m-e65bfb51eb7f4301bbf6813a47c633e9
+prompts: null
+run_id: f624601a2d9c4625beb207322930dd51
+signature:
+  inputs: '[{"type": "double", "name": "TV", "required": true}, {"type": "double",
+    "name": "radio", "required": true}, {"type": "double", "name": "newspaper", "required":
+    true}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float64", "shape": [-1]}}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2026-09-13 06:13:40.403957'
