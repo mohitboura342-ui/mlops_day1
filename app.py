@@ -2,13 +2,17 @@ import streamlit as st
 import pandas as pd
 import mlflow
 import mlflow.sklearn
+import joblib
+import os
 
-mlflow.set_tracking_uri("sqlite:///mlflow.db")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "models", "champion_model.pkl")
 
-model = mlflow.sklearn.load_model(
-    "models:/Sales_Prediction_Model@champion"
-)
+@st.cache_resource
+def load_model():
+    return joblib.load(MODEL_PATH)
 
+model = load_model()
 st.title("Advertising Sales Predictor")
 
 tv = st.number_input("TV Budget")
@@ -19,8 +23,8 @@ if st.button("Predict Sales"):
 
     input_data = pd.DataFrame({
         "TV": [tv],
-        "radio": [radio],
-        "newspaper": [newspaper]
+        "Radio": [radio],
+        "Newspaper": [newspaper]
     })
 
     prediction = model.predict(input_data)

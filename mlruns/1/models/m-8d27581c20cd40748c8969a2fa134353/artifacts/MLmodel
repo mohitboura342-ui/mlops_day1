@@ -1,4 +1,4 @@
-artifact_path: file:C:/Users/lenovo/OneDrive/Desktop/mlops_day1/mlruns/1/models/m-9c5be4d3421e4f5aa1663deb3cea0682/artifacts
+artifact_path: file:C:/Users/lenovo/OneDrive/Desktop/mlops_day1/mlruns/1/models/m-8d27581c20cd40748c8969a2fa134353/artifacts
 flavors:
   python_function:
     env:
@@ -15,9 +15,9 @@ flavors:
     sklearn_version: 1.9.0
     skops_trusted_types: null
 mlflow_version: 3.16.0
-model_id: m-9c5be4d3421e4f5aa1663deb3cea0682
-model_size_bytes: 7888
-model_uuid: m-9c5be4d3421e4f5aa1663deb3cea0682
+model_id: m-8d27581c20cd40748c8969a2fa134353
+model_size_bytes: 7311
+model_uuid: m-8d27581c20cd40748c8969a2fa134353
 prompts: null
-run_id: 0a36db9fd72f44ac9db9b427eed7c276
-utc_time_created: '2026-09-13 13:05:42.881882'
+run_id: fbf7cc59820047caac4a779d07924555
+utc_time_created: '2026-09-13 15:45:22.515932'
