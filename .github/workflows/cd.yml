@@ -5,15 +5,19 @@ on:
     workflows: ["CI Pipeline"]
     types:
       - completed
-    branches: [ main ]
+    branches:
+      - main
+
   workflow_dispatch:
 
 jobs:
   deploy_to_aws:
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
+
     environment:
       name: production
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -29,6 +33,17 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
+      - name: Create ECR Repository if it does not exist
+        env:
+          ECR_REPOSITORY: streamlit-mlops-app
+        run: |
+          aws ecr describe-repositories \
+            --repository-names $ECR_REPOSITORY \
+            --region us-east-1 \
+          || aws ecr create-repository \
+            --repository-name $ECR_REPOSITORY \
+            --region us-east-1
+
       - name: Build and Push Docker Image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -38,9 +53,11 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-   #   - name: Deploy to ECS Service
-   #     run: |
-   #       aws ecs update-service \
-    #        --cluster default \
-    #        --service streamlit-mlops-app-a37b \
-    #        --force-new-deployment
+      # ECS deployment - enable this only when ECS service is ready
+      # - name: Deploy to ECS Service
+      #   run: |
+      #     aws ecs update-service \
+      #       --cluster default \
+      #       --service streamlit-mlops-app-a37b \
+      #       --force-new-deployment \
+      #       --region us-east-1
