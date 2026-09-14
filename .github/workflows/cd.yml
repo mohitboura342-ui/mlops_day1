@@ -1,3 +1,4 @@
+
 name: CD Pipeline
 
 on:
@@ -13,7 +14,6 @@ on:
 jobs:
   deploy_to_aws:
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
-
     runs-on: ubuntu-latest
 
     environment:
@@ -62,11 +62,10 @@ jobs:
         run: |
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-      # ECS deployment baad me enable karna
-      # - name: Deploy to ECS Service
-      #   run: |
-      #     aws ecs update-service \
-      #       --cluster default \
-      #       --service streamlit-mlops-app-a37b \
-      #       --force-new-deployment \
-      #       --region eu-north-1
+      - name: Deploy to ECS Service
+        run: |
+          aws ecs update-service \
+            --cluster default \
+            --service streamlit-mlops-app-a37b \
+            --force-new-deployment \
+            --region eu-north-1
