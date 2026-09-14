@@ -13,6 +13,7 @@ on:
 jobs:
   deploy_to_aws:
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+
     runs-on: ubuntu-latest
 
     environment:
@@ -29,20 +30,39 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
+      - name: Verify AWS Identity
+        run: |
+          aws sts get-caller-identity
+
+      - name: Verify ECR Repository
+        run: |
+          aws ecr describe-repositories \
+            --repository-names streamlit-mlops-app \
+            --region us-east-1
+
       - name: Log in to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build and Push Docker Image
+      - name: Build Docker Image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: streamlit-mlops-app
           IMAGE_TAG: latest
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build \
+            -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+            .
+
+      - name: Push Docker Image to ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: streamlit-mlops-app
+          IMAGE_TAG: latest
+        run: |
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-      # ECS deployment - enable this only when ECS service is ready
+      # ECS deployment baad me enable karna
       # - name: Deploy to ECS Service
       #   run: |
       #     aws ecs update-service \
